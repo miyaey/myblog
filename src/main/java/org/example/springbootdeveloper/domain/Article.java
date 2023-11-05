@@ -1,11 +1,13 @@
 package org.example.springbootdeveloper.domain;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,4 +41,22 @@ public class Article {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    //좋아요, 좋아요 수
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    private List<Like> likes;
+    private Integer likeCnt;
+
+    //댓글, 댓글 수
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    private List<Comment> comments;
+    private Integer commentCnt;
+
+    public void likeChange(Integer likeCnt){
+        this.likeCnt = likeCnt;
+    }
+
+    public void commentChange(Integer commentCnt){
+        this.commentCnt = commentCnt;
+    }
 }
